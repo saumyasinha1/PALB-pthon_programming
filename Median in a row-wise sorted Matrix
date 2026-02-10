@@ -1,0 +1,36 @@
+#Given a row-wise sorted matrix mat[][] of size n*m, where the number of rows and columns is always odd. Return the median of the matrix. 
+class Solution:
+    def median(self, mat):
+        n = len(mat)
+        m = len(mat[0])
+
+        min_val = mat[0][0]
+        max_val = mat[0][m - 1]
+
+        for i in range(n):
+            min_val = min(min_val, mat[i][0])
+            max_val = max(max_val, mat[i][m - 1])
+
+        desired = (n * m + 1) // 2
+
+        while min_val < max_val:
+            mid = (min_val + max_val) // 2
+            count = 0
+
+            for i in range(n):
+                low = 0
+                high = m - 1
+                while low <= high:
+                    md = (low + high) // 2
+                    if mat[i][md] <= mid:
+                        low = md + 1
+                    else:
+                        high = md - 1
+                count += low
+
+            if count < desired:
+                min_val = mid + 1
+            else:
+                max_val = mid
+
+        return min_val
